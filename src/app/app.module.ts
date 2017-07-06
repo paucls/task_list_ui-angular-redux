@@ -13,8 +13,10 @@ import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { IAppState } from './store/i-app-state';
 import { store } from './store/store';
+import { TasksListActions } from './tasks-list/tasks-list.actions';
 import { TasksListComponent } from './tasks-list/tasks-list.component';
 import { TaskDetailComponent } from './tasks-list/task-detail/task-detail.component';
+import { TasksService } from './tasks-list/tasks.service';
 
 @NgModule({
   imports: [
@@ -30,6 +32,8 @@ import { TaskDetailComponent } from './tasks-list/task-detail/task-detail.compon
     TaskDetailComponent
   ],
   providers: [
+    TasksListActions,
+    TasksService,
     // used to create stub backend
     stubBackendProvider,
     MockBackend,

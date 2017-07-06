@@ -4,6 +4,7 @@ import { IAppState } from '../store/i-app-state';
 import { Task } from './task';
 import { NgRedux, select } from '@angular-redux/store';
 import { Observable } from 'rxjs/Observable';
+import { TasksListActions } from './tasks-list.actions';
 
 @Component({
   selector: 'app-tasks-list',
@@ -15,11 +16,20 @@ export class TasksListComponent implements OnInit {
 
   @select('tasks') tasks$: Observable<Task>;
 
-  constructor(private ngRedux: NgRedux<IAppState>) {
+  constructor(private ngRedux: NgRedux<IAppState>, private tasksListActions: TasksListActions) {
   }
 
   ngOnInit() {
+    this.tasksListActions.getTasks();
+  }
 
+  addTask(name: string) {
+    name = name.trim();
+    if (!name) {
+      return;
+    }
+
+    this.tasksListActions.addTask(name);
   }
 
   // addTask(name: string): Promise<number> {
