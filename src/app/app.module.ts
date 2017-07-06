@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
+import { NgReduxModule, NgRedux } from '@angular-redux/store';
 
 // used to create stub backend
 import { stubBackendProvider } from './stub-backed/stub-backend-provider';
@@ -17,7 +18,8 @@ import { TaskDetailComponent } from './tasks-list/task-detail/task-detail.compon
   imports: [
     BrowserModule,
     FormsModule,
-    HttpModule
+    HttpModule,
+    NgReduxModule
   ],
   declarations: [
     AppComponent,
