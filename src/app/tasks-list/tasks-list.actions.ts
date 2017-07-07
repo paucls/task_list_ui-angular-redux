@@ -33,10 +33,10 @@ export class TasksListActions {
       }));
   }
 
-  deleteTask(deletedTask: Task) {
+  deleteTask(task: Task) {
     this.ngRedux.dispatch({
       type: DELETE_TASK_SUCCESS,
-      deletedTask
+      task
     });
   }
 

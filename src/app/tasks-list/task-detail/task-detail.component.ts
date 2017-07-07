@@ -1,7 +1,7 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 import { Task } from '../task';
-import { TasksService } from '../tasks.service';
+import { TasksListActions } from '../tasks-list.actions';
 
 @Component({
   selector: 'app-task-detail',
@@ -11,15 +11,12 @@ import { TasksService } from '../tasks.service';
 export class TaskDetailComponent {
 
   @Input() task: Task;
-  @Output() taskDeleted = new EventEmitter<Task>();
   processing: boolean = false;
 
-  constructor(private tasksService: TasksService) {}
+  constructor(private tasksListActions: TasksListActions) {}
 
   deleteTask(task: Task) {
-    this.tasksService
-      .delete(task.id)
-      .then(() => this.taskDeleted.emit(this.task));
+    this.tasksListActions.deleteTask(task);
   }
 
   toggleTaskStatus(task: Task) {
@@ -27,9 +24,9 @@ export class TaskDetailComponent {
 
     task.done = !task.done;
 
-    return this.tasksService
-      .update(task)
-      .then(() => this.processing = false);
+  //   return this.tasksService
+  //     .update(task)
+  //     .then(() => this.processing = false);
   }
 
 }

@@ -8,6 +8,5 @@
   </div>
 
   <app-task-detail *ngFor="let task of tasks$ | async"
-                   [task]="task"
-                   (taskDeleted)="deleteTask($event)"></app-task-detail>
+                   [task]="task"></app-task-detail>
 </div>
