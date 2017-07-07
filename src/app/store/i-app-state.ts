@@ -1,5 +1,6 @@
 import { Task } from 'app/tasks-list/task';
 
 export interface IAppState {
-  tasks: Task[]
+  tasks: Task[];
+  processing?: boolean;
 }

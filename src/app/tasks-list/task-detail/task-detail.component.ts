@@ -2,6 +2,8 @@ import { Component, Input } from '@angular/core';
 
 import { Task } from '../task';
 import { TasksListActions } from '../tasks-list.actions';
+import { Observable } from 'rxjs/Observable';
+import { select } from '@angular-redux/store';
 
 @Component({
   selector: 'app-task-detail',
@@ -11,7 +13,8 @@ import { TasksListActions } from '../tasks-list.actions';
 export class TaskDetailComponent {
 
   @Input() task: Task;
-  processing: boolean = false;
+
+  @select('processing') processing$: Observable<boolean>;
 
   constructor(private tasksListActions: TasksListActions) {}
 
@@ -20,13 +23,7 @@ export class TaskDetailComponent {
   }
 
   toggleTaskStatus(task: Task) {
-    this.processing = true;
-
-    task.done = !task.done;
-
-  //   return this.tasksService
-  //     .update(task)
-  //     .then(() => this.processing = false);
+    this.tasksListActions.toggleTaskStatus(task);
   }
 
 }

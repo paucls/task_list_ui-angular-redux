@@ -6,6 +6,8 @@ import { TasksService } from './tasks.service';
 
 export const ADD_TASK_SUCCESS = 'tasks-list/ADD_TASK_SUCCESS';
 export const DELETE_TASK_SUCCESS = 'tasks-list/DELETE_TASK_SUCCESS';
+export const TOGGLE_TASK_SUCCESS = 'tasks-list/TOGGLE_TASK_SUCCESS';
+export const TOGGLE_TASK_START = 'tasks-list/TOGGLE_TASK_START';
 export const REQUEST_TASKS_SUCCESS = 'tasks-list/REQUEST_TASKS_SUCCESS';
 
 @Injectable()
@@ -40,4 +42,19 @@ export class TasksListActions {
     });
   }
 
+  toggleTaskStatus(task: Task) {
+    const toggledTask = {...task, done: !task.done};
+
+    this.ngRedux.dispatch({
+      type: TOGGLE_TASK_START,
+      task: toggledTask
+    });
+
+    return this.tasksService
+      .update(toggledTask)
+      .then(task => this.ngRedux.dispatch({
+        type: TOGGLE_TASK_SUCCESS,
+        task: toggledTask
+      }));
+  }
 }
