@@ -1,30 +1,33 @@
 /* tslint:disable:no-unused-variable */
-import { TestBed, async } from '@angular/core/testing';
-import { Http } from '@angular/http';
+import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { AppComponent } from './app.component';
-import { NavbarComponent } from './navbar/navbar.component';
-import { TasksListComponent } from './tasks-list/tasks-list.component';
-import { TaskDetailComponent } from './tasks-list/task-detail/task-detail.component';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('AppComponent', () => {
+
+  let fixture: ComponentFixture<AppComponent>;
+  let appEl: HTMLElement;
+
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        AppComponent,
-        NavbarComponent,
-        TasksListComponent,
-        TaskDetailComponent
-      ],
-      providers: [
-        { provide: Http, useClass: class HttpStub{} }
-      ]
+      schemas: [NO_ERRORS_SCHEMA],
+      declarations: [AppComponent]
     });
+
+    fixture = TestBed.createComponent(AppComponent);
+
+    // query for the app component element
+    appEl = fixture.debugElement.nativeElement;
+
+    fixture.detectChanges();
   });
 
-  it('should create the app', async(() => {
-    let fixture = TestBed.createComponent(AppComponent);
-    let app = fixture.debugElement.componentInstance;
-    expect(app).toBeTruthy();
-  }));
+  it('should have a navbar', () => {
+    expect(appEl.querySelector('app-navbar')).toBeTruthy();
+  });
+
+  it('should have a taks list', () => {
+    expect(appEl.querySelector('app-tasks-list')).toBeTruthy();
+  });
 
 });
