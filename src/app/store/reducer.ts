@@ -5,24 +5,12 @@ const initialState: IAppState = {
   tasks: []
 };
 
-function storeTask(state, action): IAppState {
-  return Object.assign({}, state, {
-    tasks: state.tasks.concat(action.task)
-  })
-}
-
-function storeTasks(state, action): IAppState {
-  return Object.assign({}, state, {
-    tasks: action.tasks
-  })
-}
-
 export function reducer(state = initialState, action) {
   switch (action.type) {
     case ADD_TASK_SUCCESS:
-      return storeTask(state, action);
+      return {...state, tasks: [...state.tasks, action.task]};
     case REQUEST_TASKS_SUCCESS:
-      return storeTasks(state, action);
+      return {...state, tasks: action.tasks};
     default:
       return state;
   }
