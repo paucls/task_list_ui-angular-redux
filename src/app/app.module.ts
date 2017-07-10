@@ -12,6 +12,7 @@ import { BaseRequestOptions } from '@angular/http';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { store } from './store/store';
+import { IAppState } from './store/i-app-state';
 import { TasksListActions } from './tasks-list/tasks-list.actions';
 import { TasksListComponent } from './tasks-list/tasks-list.component';
 import { TaskDetailComponent } from './tasks-list/task-detail/task-detail.component';
@@ -41,7 +42,7 @@ import { TasksService } from './tasks-list/tasks.service';
   bootstrap: [AppComponent]
 })
 export class AppModule {
-  constructor(ngRedux: NgRedux<any>) {
+  constructor(ngRedux: NgRedux<IAppState>) {
     ngRedux.provideStore(store);
   }
 }

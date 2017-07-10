@@ -6,7 +6,6 @@ import { TaskDetailComponent } from './task-detail.component';
 import { Task } from '../task';
 import { TasksService } from '../tasks.service';
 import { TasksListActions } from '../tasks-list.actions';
-import { NgRedux } from '@angular-redux/store';
 import { MockNgRedux, NgReduxTestingModule } from '@angular-redux/store/lib/testing';
 
 describe('TaskDetailComponent', () => {
