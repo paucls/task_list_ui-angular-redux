@@ -61,6 +61,7 @@ describe('TasksListComponent', () => {
     fixture.detectChanges();
 
     let taskDetailDe = taskListDe.queryAll(By.css('app-task-detail'));
+    expect(tasksListActions.getTasks).toHaveBeenCalled();
     expect(taskDetailDe.length).toBe(2);
     expect(taskDetailDe[0].nativeElement.textContent).toContain(TASK_1.name);
     expect(taskDetailDe[1].nativeElement.textContent).toContain(TASK_2.name);
