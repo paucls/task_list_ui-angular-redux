@@ -1,5 +1,5 @@
 {
-  "name": "task-list-ui-angular",
+  "name": "task-list-ui-angular-redux",
   "version": "1.1.0",
   "license": "MIT",
   "angular-cli": {},
