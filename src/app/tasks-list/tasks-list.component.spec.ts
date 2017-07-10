@@ -33,8 +33,7 @@ describe('TasksListComponent', () => {
       ],
       providers: [
         TasksListActions,
-        {provide: TasksService, useClass: class {}},
-        {provide: NgRedux, useClass: class {}}
+        {provide: TasksService, useClass: class {}}
       ]
     }).compileComponents();
   }));
