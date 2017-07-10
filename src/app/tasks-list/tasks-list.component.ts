@@ -1,19 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { TasksService } from './tasks.service';
-import { Task } from './task';
 import { select } from '@angular-redux/store';
 import { Observable } from 'rxjs/Observable';
+import { Task } from './task';
 import { TasksListActions } from './tasks-list.actions';
 
 @Component({
   selector: 'app-tasks-list',
   templateUrl: './tasks-list.component.html',
-  styleUrls: ['./tasks-list.component.css'],
-  providers: [TasksService]
+  styleUrls: ['./tasks-list.component.css']
 })
 export class TasksListComponent implements OnInit {
 
-  @select('tasks') tasks$: Observable<Task>;
+  @select(['tasksList', 'tasks']) tasks$: Observable<Task>;
 
   constructor(private tasksListActions: TasksListActions) {
   }

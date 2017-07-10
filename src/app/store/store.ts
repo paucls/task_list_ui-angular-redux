@@ -1,7 +1,6 @@
 import { environment } from '../../environments/environment';
 import { createStore, compose, GenericStoreEnhancer } from 'redux';
-import { IAppState } from './i-app-state';
-import { reducer } from './reducer';
+import { rootReducer } from './root-reducer';
 
 const devToolsExtension: GenericStoreEnhancer = window['devToolsExtension'] ?
   window['devToolsExtension']() : (f) => f;
@@ -12,4 +11,4 @@ if (!environment.production) {
   enhancer = compose(devToolsExtension) as GenericStoreEnhancer;
 }
 
-export const store = createStore<IAppState>(reducer, enhancer);
+export const store = createStore<any>(rootReducer, enhancer);

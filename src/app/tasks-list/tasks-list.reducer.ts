@@ -1,15 +1,10 @@
-import { IAppState } from './i-app-state';
 import {
   ADD_TASK_SUCCESS, DELETE_TASK_SUCCESS, REQUEST_TASKS_SUCCESS, TOGGLE_TASK_START,
   TOGGLE_TASK_SUCCESS
-} from '../tasks-list/tasks-list.actions';
+} from './tasks-list.actions';
+import { TasksListState, tasksListState } from './tasks-list.state';
 
-const initialState: IAppState = {
-  tasks: [],
-  processing: false
-};
-
-export function reducer(state = initialState, action) {
+export function tasksListReducer(state = tasksListState, action) : TasksListState {
   switch (action.type) {
     case ADD_TASK_SUCCESS:
       return {...state, tasks: [...state.tasks, action.task]};

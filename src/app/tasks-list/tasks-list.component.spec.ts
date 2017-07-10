@@ -53,7 +53,7 @@ describe('TasksListComponent', () => {
     taskListDe = fixture.debugElement.query(By.css('div.list-group'));
     taskListEl = taskListDe.nativeElement;
 
-    selectorStub = MockNgRedux.getSelectorStub('tasks');
+    selectorStub = MockNgRedux.getSelectorStub(['tasksList', 'tasks']);
   });
 
   it('should display the list of tasks', () => {

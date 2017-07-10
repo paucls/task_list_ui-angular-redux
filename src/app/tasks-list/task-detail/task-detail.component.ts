@@ -14,7 +14,7 @@ export class TaskDetailComponent {
 
   @Input() task: Task;
 
-  @select('processing') processing$: Observable<boolean>;
+  @select(['tasksList', 'processing']) processing$: Observable<boolean>;
 
   constructor(private tasksListActions: TasksListActions) {}
 

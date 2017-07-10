@@ -47,7 +47,7 @@ describe('TaskDetailComponent', () => {
 
     component.task = TASK;
 
-    selectorStub = MockNgRedux.getSelectorStub('processing');
+    selectorStub = MockNgRedux.getSelectorStub(['tasksList', 'processing']);
 
     fixture.detectChanges();
   });
