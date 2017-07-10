@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { NgRedux } from '@angular-redux/store';
-import { IAppState } from '../store/i-app-state';
 import { Task } from 'app/tasks-list/task';
 import { TasksService } from './tasks.service';
 
@@ -13,7 +12,7 @@ export const REQUEST_TASKS_SUCCESS = 'tasks-list/REQUEST_TASKS_SUCCESS';
 @Injectable()
 export class TasksListActions {
 
-  constructor(private ngRedux: NgRedux<IAppState>, private tasksService: TasksService) {
+  constructor(private ngRedux: NgRedux<any>, private tasksService: TasksService) {
   }
 
   getTasks() {
