@@ -1,41 +1,31 @@
 import { Component, OnInit } from '@angular/core';
-import { TasksService } from './tasks.service';
+import { select } from '@angular-redux/store';
+import { Observable } from 'rxjs/Observable';
 import { Task } from './task';
+import { TasksListActions } from './tasks-list.actions';
 
 @Component({
   selector: 'app-tasks-list',
   templateUrl: './tasks-list.component.html',
-  styleUrls: ['./tasks-list.component.css'],
-  providers: [TasksService]
+  styleUrls: ['./tasks-list.component.css']
 })
 export class TasksListComponent implements OnInit {
 
-  tasks: Task[] = [];
+  @select(['tasksList', 'tasks']) tasks$: Observable<Task>;
 
-  constructor(private tasksService: TasksService) {
+  constructor(private tasksListActions: TasksListActions) {
   }
 
   ngOnInit() {
-    this.tasksService
-      .getAll()
-      .then(tasks => this.tasks = tasks);
+    this.tasksListActions.getTasks();
   }
 
-  addTask(name: string): Promise<number> {
-    name = name.trim();
-    if (!name) {
+  addTask(name: string) {
+    if (!name.trim()) {
       return;
     }
 
-    let newTask: Task = {name: name};
-
-    return this.tasksService
-      .save(newTask)
-      .then(task => this.tasks.push(task));
-  }
-
-  deleteTask(deletedTask: Task) {
-    this.tasks = this.tasks.filter(task => task.id !== deletedTask.id);
+    this.tasksListActions.addTask(name);
   }
 
 }

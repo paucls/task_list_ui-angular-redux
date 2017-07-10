@@ -1,11 +1,12 @@
-import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
-import { Http } from '@angular/http';
 
 import { TaskDetailComponent } from './task-detail.component';
 import { Task } from '../task';
 import { TasksService } from '../tasks.service';
+import { TasksListActions } from '../tasks-list.actions';
+import { MockNgRedux, NgReduxTestingModule } from '@angular-redux/store/lib/testing';
 
 describe('TaskDetailComponent', () => {
 
@@ -15,14 +16,18 @@ describe('TaskDetailComponent', () => {
   let fixture: ComponentFixture<TaskDetailComponent>;
   let taskDetailDe: DebugElement;
   let taskDetailEl: HTMLElement;
-  let tasksService: TasksService;
+  let tasksListActions: TasksListActions;
+  let selectorStub;
 
   beforeEach(async(() => {
+    MockNgRedux.reset();
+
     TestBed.configureTestingModule({
+      imports: [NgReduxTestingModule],
       declarations: [TaskDetailComponent],
       providers: [
-        TasksService,
-        {provide: Http, useClass: class HttpStub {}}
+        TasksListActions,
+        {provide: TasksService, useClass: class {}}
       ]
     }).compileComponents();
   }));
@@ -31,14 +36,16 @@ describe('TaskDetailComponent', () => {
     fixture = TestBed.createComponent(TaskDetailComponent);
     component = fixture.componentInstance;
 
-    // TasksService from the root injector
-    tasksService = fixture.debugElement.injector.get(TasksService);
+    // TasksListActions from the root injector
+    tasksListActions = fixture.debugElement.injector.get(TasksListActions);
 
     // query for the list element by CSS element selector
     taskDetailDe = fixture.debugElement.query(By.css('.list-group-item'));
     taskDetailEl = taskDetailDe.nativeElement;
 
     component.task = TASK;
+
+    selectorStub = MockNgRedux.getSelectorStub(['tasksList', 'processing']);
 
     fixture.detectChanges();
   });
@@ -79,69 +86,48 @@ describe('TaskDetailComponent', () => {
     expect(isUncheckedIconPresent).toBe(false);
   });
 
+  it('should not display processing spinner by default', () => {
+    selectorStub.next(false);
+    fixture.detectChanges();
+
+    let isSpinnerPresent = taskDetailEl.querySelector('.fa-spinner');
+    expect(isSpinnerPresent).toBeFalsy();
+  });
+
+  it('should display processing spinner when processing true on state', async(() => {
+    selectorStub.next(true);
+    fixture.detectChanges();
+
+    let isSpinnerPresent = taskDetailEl.querySelector('.fa-spinner');
+    expect(isSpinnerPresent).toBeTruthy();
+  }));
+
   describe('deleteTask()', () => {
 
     beforeEach(() => {
-      spyOn(tasksService, 'delete').and.returnValue(Promise.resolve());
+      spyOn(tasksListActions, 'deleteTask');
     });
 
-    it('should call the service to delete the task', () => {
+    it('should dispatch the delete task action', () => {
       component.deleteTask(TASK);
 
-      expect(tasksService.delete).toHaveBeenCalledWith(TASK.id);
+      expect(tasksListActions.deleteTask).toHaveBeenCalledWith(TASK);
     });
-
-    it('should raise task deleted event when delete successes', fakeAsync(() => {
-      let deletedTask: Task;
-      component.taskDeleted.subscribe((task: Task) => deletedTask = task);
-
-      component.deleteTask(TASK);
-      tick();
-
-      expect(deletedTask).toBe(TASK);
-    }));
 
   });
 
   describe('toggleTaskStatus()', () => {
 
     beforeEach(() => {
-      spyOn(tasksService, 'update').and.returnValue(Promise.resolve());
+      spyOn(tasksListActions, 'toggleTaskStatus');
     });
 
-    it('should set an undone task as done', () => {
-      let task: Task = {name: 'Undone task', done: false};
-
-      component.toggleTaskStatus(task);
-
-      expect(task.done).toBe(true);
-    });
-
-    it('should set a done task as undone', () => {
-      let task: Task = {name: 'Done task', done: true};
-
-      component.toggleTaskStatus(task);
-
-      expect(task.done).toBe(false);
-    });
-
-    it('should call the service to update task', () => {
+    it('should dispatch the toggle task action', () => {
       let task: Task = {name: 'Task', done: false};
-      let expectedToggledTask: Task = {name: 'Task', done: true};
 
       component.toggleTaskStatus(task);
 
-      expect(tasksService.update).toHaveBeenCalledWith(expectedToggledTask);
-    });
-
-    it('should indicate when operation is processing', () => {
-      let task: Task = {name: 'Undone task', done: false};
-
-      expect(component.processing).toBe(false);
-
-      component.toggleTaskStatus(task);
-
-      expect(component.processing).toBe(true);
+      expect(tasksListActions.toggleTaskStatus).toHaveBeenCalledWith(task);
     });
 
   });
