@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
@@ -7,6 +7,7 @@ import { Task } from '../task';
 import { TasksService } from '../tasks.service';
 import { TasksListActions } from '../tasks-list.actions';
 import { NgRedux } from '@angular-redux/store';
+import { MockNgRedux, NgReduxTestingModule } from '@angular-redux/store/lib/testing';
 
 describe('TaskDetailComponent', () => {
 
@@ -17,14 +18,18 @@ describe('TaskDetailComponent', () => {
   let taskDetailDe: DebugElement;
   let taskDetailEl: HTMLElement;
   let tasksListActions: TasksListActions;
+  let selectorStub;
 
   beforeEach(async(() => {
+    MockNgRedux.reset();
+
     TestBed.configureTestingModule({
+      imports: [NgReduxTestingModule],
       declarations: [TaskDetailComponent],
       providers: [
         TasksListActions,
-        {provide: TasksService, useClass: class TasksServiceStub {}},
-        {provide: NgRedux, useClass: class NgReduxStub {}}
+        {provide: TasksService, useClass: class {}},
+        {provide: NgRedux, useClass: class {}}
       ]
     }).compileComponents();
   }));
@@ -41,6 +46,8 @@ describe('TaskDetailComponent', () => {
     taskDetailEl = taskDetailDe.nativeElement;
 
     component.task = TASK;
+
+    selectorStub = MockNgRedux.getSelectorStub('processing');
 
     fixture.detectChanges();
   });
@@ -82,16 +89,20 @@ describe('TaskDetailComponent', () => {
   });
 
   it('should not display processing spinner by default', () => {
-    let isSpinnerPresent = taskDetailDe.queryAll(By.css('.task-check > .fa-spinner')).length > 0;
-    expect(isSpinnerPresent).toBe(false);
+    selectorStub.next(false);
+    fixture.detectChanges();
+
+    let isSpinnerPresent = taskDetailEl.querySelector('.fa-spinner');
+    expect(isSpinnerPresent).toBeFalsy();
   });
 
-  // it('should display processing spinner when processing true on state', () => {
-  //   component.processing$ = Observable.of(true);
-  //
-  //   let isSpinnerPresent = taskDetailDe.queryAll(By.css('.task-check > .fa-spinner')).length > 0;
-  //   expect(isSpinnerPresent).toBe(false);
-  // });
+  it('should display processing spinner when processing true on state', async(() => {
+    selectorStub.next(true);
+    fixture.detectChanges();
+
+    let isSpinnerPresent = taskDetailEl.querySelector('.fa-spinner');
+    expect(isSpinnerPresent).toBeTruthy();
+  }));
 
   describe('deleteTask()', () => {
 
