@@ -1,5 +1,5 @@
 /* tslint:disable:no-unused-variable */
-import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 import { NgRedux } from '@angular-redux/store';
@@ -9,6 +9,7 @@ import { TasksService } from './tasks.service';
 import { Task } from './task';
 import { TaskDetailComponent } from './task-detail/task-detail.component';
 import { TasksListActions } from './tasks-list.actions';
+import { MockNgRedux, NgReduxTestingModule } from '@angular-redux/store/lib/testing';
 
 describe('TasksListComponent', () => {
 
@@ -20,17 +21,20 @@ describe('TasksListComponent', () => {
   let taskListDe: DebugElement;
   let taskListEl: HTMLElement;
   let tasksListActions: TasksListActions;
+  let selectorStub;
 
   beforeEach(async(() => {
+    MockNgRedux.reset();
     TestBed.configureTestingModule({
+      imports:[NgReduxTestingModule],
       declarations: [
         TasksListComponent,
         TaskDetailComponent
       ],
       providers: [
         TasksListActions,
-        {provide: TasksService, useClass: class TasksServiceStub {}},
-        {provide: NgRedux, useClass: class NgReduxStub {}}
+        {provide: TasksService, useClass: class {}},
+        {provide: NgRedux, useClass: class {}}
       ]
     }).compileComponents();
   }));
@@ -42,25 +46,25 @@ describe('TasksListComponent', () => {
     // TasksListActions from the root injector
     tasksListActions = fixture.debugElement.injector.get(TasksListActions);
 
-    // Setup spy on the `getAll` method
-    // spyOn(tasksListActions, 'getAll').and.returnValue(Promise.resolve([TASK_1, TASK_2]));
+    // Setup spy on the `getTasks` method
+    spyOn(tasksListActions, 'getTasks');
 
     // query for the list-group by CSS element selector
     taskListDe = fixture.debugElement.query(By.css('div.list-group'));
     taskListEl = taskListDe.nativeElement;
+
+    selectorStub = MockNgRedux.getSelectorStub('tasks');
   });
 
-  // it('should display the list of tasks', fakeAsync(() => {
-  //   fixture.detectChanges();
-  //   tick(); // wait for async getAll
-  //   fixture.detectChanges(); // update view with tasks
-  //
-  //   let taskDetailDe = taskListDe.queryAll(By.css('app-task-detail'));
-  //   expect(tasksListActions.getTasks).toHaveBeenCalled();
-  //   expect(taskDetailDe.length).toBe(2);
-  //   expect(taskDetailDe[0].nativeElement.textContent).toContain(TASK_1.name);
-  //   expect(taskDetailDe[1].nativeElement.textContent).toContain(TASK_2.name);
-  // }));
+  it('should display the list of tasks', () => {
+    selectorStub.next([TASK_1, TASK_2]);
+    fixture.detectChanges();
+
+    let taskDetailDe = taskListDe.queryAll(By.css('app-task-detail'));
+    expect(taskDetailDe.length).toBe(2);
+    expect(taskDetailDe[0].nativeElement.textContent).toContain(TASK_1.name);
+    expect(taskDetailDe[1].nativeElement.textContent).toContain(TASK_2.name);
+  });
 
   describe('addTask()', () => {
 
