@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { NgReduxModule, NgRedux, DevToolsExtension } from '@angular-redux/store';
 import { createLogger } from 'redux-logger';
+import * as reduxImmutableStateInvariant from 'redux-immutable-state-invariant';
 
 // used to create stub backend
 import { stubBackendProvider } from './stub-backed/stub-backend-provider';
@@ -50,6 +51,7 @@ export class AppModule {
 
     if (!environment.production) {
       middlewares.push(createLogger());
+      middlewares.push(reduxImmutableStateInvariant.default());
 
       if (devTools.isEnabled()) {
         enhancers.push(devTools.enhancer());
