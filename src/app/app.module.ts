@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { NgReduxModule, NgRedux, DevToolsExtension } from '@angular-redux/store';
+import { createLogger } from 'redux-logger';
 
 // used to create stub backend
 import { stubBackendProvider } from './stub-backed/stub-backend-provider';
@@ -44,12 +45,17 @@ import { environment } from '../environments/environment';
 export class AppModule {
   constructor(ngRedux: NgRedux<any>,
               devTools: DevToolsExtension) {
-    let enhancers = [];
+    const middlewares = [];
+    const enhancers = [];
 
     if (!environment.production) {
-      enhancers = devTools.isEnabled() ? [devTools.enhancer()] : [];
+      middlewares.push(createLogger());
+
+      if (devTools.isEnabled()) {
+        enhancers.push(devTools.enhancer());
+      }
     }
 
-    ngRedux.configureStore(rootReducer, {}, [], enhancers);
+    ngRedux.configureStore(rootReducer, {}, middlewares, enhancers);
   }
 }

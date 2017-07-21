@@ -60,3 +60,4 @@ Angular + Redux
 - https://redux-observable.js.org/
 - https://angular-redux.github.io/store/
 - https://app.pluralsight.com/library/courses/angular-2-redux-manage-state/table-of-contents
+- https://github.com/evgenyrodionov/redux-logger

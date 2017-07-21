@@ -41,6 +41,7 @@
     "typescript": "~2.2.0"
   },
   "devDependencies": {
+    "@types/redux-logger": "^3.0.0",
     "codelyzer": "~2.0.0",
     "jasmine-core": "~2.5.2",
     "jasmine-spec-reporter": "~3.2.0",
@@ -51,6 +52,7 @@
     "karma-jasmine-html-reporter": "^0.2.2",
     "karma-coverage-istanbul-reporter": "^0.2.0",
     "protractor": "~5.1.0",
+    "redux-logger": "^3.0.6",
     "ts-node": "~2.0.0",
     "tslint": "~4.5.0"
   }
