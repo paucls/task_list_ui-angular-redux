@@ -6,6 +6,6 @@ export const tasksListState: TasksListState = {
 };
 
 export interface TasksListState {
-  tasks: Task[],
-  processing: boolean
+  tasks: Task[];
+  processing: boolean;
 }
