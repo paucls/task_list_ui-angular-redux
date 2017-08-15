@@ -1,6 +1,9 @@
 {
   "name": "task-list-ui-angular-redux",
   "version": "2.1.0",
+  "engines": {
+    "node": "7.10.1"
+  },
   "license": "MIT",
   "angular-cli": {},
   "scripts": {
@@ -17,14 +20,14 @@
   "private": true,
   "dependencies": {
     "@angular-redux/store": "^6.5.4",
-    "@angular/common": "~4.1.2",
-    "@angular/compiler": "~4.1.2",
-    "@angular/core": "~4.1.2",
-    "@angular/forms": "~4.1.2",
-    "@angular/http": "~4.1.2",
-    "@angular/platform-browser": "~4.1.2",
-    "@angular/platform-browser-dynamic": "~4.1.2",
-    "@angular/router": "~4.1.2",
+    "@angular/common": "^4.2.3",
+    "@angular/compiler": "^4.2.3",
+    "@angular/core": "^4.2.3",
+    "@angular/forms": "^4.2.3",
+    "@angular/http": "^4.2.3",
+    "@angular/platform-browser": "^4.2.3",
+    "@angular/platform-browser-dynamic": "^4.2.3",
+    "@angular/router": "^4.2.3",
     "bootstrap": "3.3.7",
     "bootswatch": "3.3.7",
     "core-js": "^2.4.1",
@@ -34,11 +37,13 @@
     "rxjs": "^5.1.0",
     "zone.js": "^0.8.4",
 
-    "@angular/cli": "1.0.3",
-    "@angular/compiler-cli": "~4.1.2",
+    "@angular/cli": "1.1.2",
+    "@angular/compiler-cli": "^4.2.3",
     "@types/jasmine": "2.5.38",
     "@types/node": "~6.0.60",
-    "typescript": "~2.2.0"
+    "typescript": "~2.2.0",
+    "redux-immutable-state-invariant": "^2.0.0",
+    "redux-logger": "^3.0.6"
   },
   "devDependencies": {
     "@types/redux-immutable-state-invariant": "^2.0.0",
@@ -53,8 +58,6 @@
     "karma-jasmine": "~1.1.0",
     "karma-jasmine-html-reporter": "^0.2.2",
     "protractor": "~5.1.0",
-    "redux-immutable-state-invariant": "^2.0.0",
-    "redux-logger": "^3.0.6",
     "ts-node": "~2.0.0",
     "tslint": "~4.5.0"
   }
